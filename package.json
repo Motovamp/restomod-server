@@ -1,0 +1,28 @@
+{
+  "name": "restomod-server",
+  "version": "0.2.0",
+  "description": "Restomod car comp node js server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Motovamp/raspberry-gpio-test.git"
+  },
+  "keywords": [
+    "restomod"
+  ],
+  "author": "MotoVamp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Motovamp/raspberry-gpio-test/issues"
+  },
+  "homepage": "https://github.com/Motovamp/raspberry-gpio-test#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "pug": "^3.0.2",
+    "socket.io": "^4.0.1"
+  }
+}

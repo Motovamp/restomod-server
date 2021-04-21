@@ -1,0 +1,22 @@
+html(lang="en-US")
+head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title restomod-comp
+    link(rel="icon", href="/favicon.ico")
+    
+    each style in styles
+        link( href="/jsvue/css/" + style, rel="preload", as="style")
+    each style in styles
+        link( href="/jsvue/css/" + style, rel="stylesheet")
+    each script in scripts
+        link( href="/jsvue/js/" + script, rel="preload", as="script")
+body
+    noscript
+        strong
+    div(id="app")
+    
+    script(src="/js/socket.io.js")
+    each script in scripts
+        script(src="/jsvue/js/" + script)
