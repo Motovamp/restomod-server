@@ -1,6 +1,6 @@
 {
   "name": "restomod-server",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Restomod car comp node js server",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "i2c-bus": "^5.2.2",
     "pug": "^3.0.2",
     "raspi-serial": "^6.0.0",
     "socket.io": "^4.0.1"
