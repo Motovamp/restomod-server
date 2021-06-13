@@ -29,10 +29,10 @@ var serial = false
 function sProcess(iface, socc) {
 	console.log("test2")
 	iface.open(() => {
-	    let values = ["A", "B", "C", "D", "E", "Q", "R", "S", "T", "U", "K", "L", "M", "N"]
+	    let values = ["A", "B", "C", "D", "E", "Q", "R", "S", "T", "U", "P"]
 	    let value = -1
 	    iface.on('data', (data) => {
-			let val = data.toString().replace(/[^ABCDEQRSTUKLMN]/g, '')
+			let val = data.toString().replace(/[^ABCDEQRSTUP]/g, '')
 			value = values.indexOf(val)
 			if(value !== -1) {
 		    	console.log('command ' + val)
@@ -92,28 +92,27 @@ server.listen(port, () => {
 function digitalRead(socket) {
 	let bv = brake.read()
 	socket.emit('brake', bv)
-
-	// if(bv != brakeValue) {
-	// 	brakeValue = bv
-		
-	// }
+	if(bv != brakeValue) {
+		brakeValue = bv
+	}
 	
 	let cv = check.read()
 	socket.emit('check', cv)
-	// if(cv != checkValue) {
-	// 	checkValue = cv
-		
-	// }
+	if(cv != checkValue) {
+		checkValue = cv
+	}
 
 	// console.log('reading', bv, cv)
 }
 
 function boostOn() {
+	boost1.write(0)
 	boost2.write(1)
 	setTimeout(() => boost2.write(0), 1000)
 }
 
 function boostOff() {
+	boost2.write(0)
 	boost1.write(1)
 	setTimeout(() => boost1.write(0), 1000)
 }
