@@ -103,7 +103,7 @@ raspi.init(() => {
     io.sockets.on('connection', socket => {
 		console.log('connected')
 
-		digitalRead(socket)
+		// digitalRead(socket)
 
         // socket.on('test', data => { 
         //     console.log(data)
