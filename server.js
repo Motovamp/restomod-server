@@ -81,9 +81,11 @@ var brakeValue = 1,
 		pin: 'GPIO24',
 		pullResistor: gpio.PULL_DOWN
     })
-    // const output = new gpio.DigitalOutput('GPIO16');
-    // output.write(1)
 
+    const boost = new gpio.DigitalOutput('GPIO16')
+    const turns = new gpio.DigitalOutput('GPIO20')
+	boost.write(0) 
+	turns.write(0)
 
 function digitalRead(socket) {
 	let bv = brake.read()
@@ -101,7 +103,7 @@ function digitalRead(socket) {
 		
 	// }
 
-	console.log('reading', bv, cv)
+	// console.log('reading', bv, cv)
 }
 
 
@@ -115,6 +117,21 @@ raspi.init(() => {
 
         socket.on('read', () => { 
 			digitalRead(socket)
+		})
+
+		socket.on('exhst', value => {
+			if(value == 'boost') {
+				boost.write(1)
+			} else {
+				boost.write(0)
+			}
+		})		
+		socket.on('turn', value => {
+			if(value == 'blink') {
+				turns.write(1)
+			} else {
+				turns.write(0)
+			}
 		})
     })
 
