@@ -86,20 +86,22 @@ var brakeValue = 1,
 
 
 function digitalRead(socket) {
-	// let bv = brake.read()
-	socket.emit('brake', brake.read())
+	let bv = brake.read()
+	socket.emit('brake', bv)
 
 	// if(bv != brakeValue) {
 	// 	brakeValue = bv
 		
 	// }
 	
-	// let cv = check.read()
-	socket.emit('check', check.read())
+	let cv = check.read()
+	socket.emit('check', cv)
 	// if(cv != checkValue) {
 	// 	checkValue = cv
 		
 	// }
+
+	console.log('reading', bv, cv)
 }
 
 
@@ -113,7 +115,6 @@ raspi.init(() => {
 
         socket.on('read', () => { 
 			digitalRead(socket)
-            console.log('reading')
 		})
     })
 
