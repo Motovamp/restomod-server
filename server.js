@@ -64,7 +64,25 @@ server.listen(port, () => {
 })
 
 
-var brakeValue = 1
+var brakeValue = 1,
+	checkValue = 1
+
+async function digitalRead(socket) {
+	while(true) {
+		let bv = brake.read()
+		if(bv != brakeValue) {
+			brakeValue = bv
+			socket.emit('brake', brakeValue)
+		}
+		
+		let cv = check.read()
+		if(cv != checkValue) {
+			checkValue = cv
+			socket.emit('check', checkValue)
+		}
+	}
+}
+
 
 raspi.init(() => {
     serial = new Serial({portId: "/dev/serial0"})
@@ -83,10 +101,7 @@ raspi.init(() => {
     io.sockets.on('connection', socket => {
 		console.log('connected')
 
-		while(true) {
-			socket.emit('brake', brake.read())
-			socket.emit('check', check.read())
-		}
+		digitalRead(socket)
 
         // socket.on('test', data => { 
         //     console.log(data)
