@@ -92,16 +92,10 @@ server.listen(port, () => {
 function digitalRead(socket) {
 	let bv = brake.read()
 	socket.emit('brake', bv)
-	if(bv != brakeValue) {
-		brakeValue = bv
-	}
-	
+		
 	let cv = check.read()
 	socket.emit('check', cv)
-	if(cv != checkValue) {
-		checkValue = cv
-	}
-
+	
 	// console.log('reading', bv, cv)
 }
 
