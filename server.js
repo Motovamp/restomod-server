@@ -109,7 +109,7 @@ raspi.init(() => {
 
     io.sockets.on('connection', socket => {
 		console.log('connected')
-		socket.emit('connect', 'success')
+		socket.emit('sconnect', 'success')
 
         socket.on('read', () => { 
 			digitalRead(socket)
