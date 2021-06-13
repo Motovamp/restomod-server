@@ -19,25 +19,29 @@ exports.pMode = product_mode
 
 const raspi = require('raspi')
 const Serial = require('raspi-serial').Serial
+const gpio = require('raspi-gpio')
 var serial = false
+
+
+
+
 
 function sProcess(iface, socc) {
 	console.log("test2")
 	iface.open(() => {
-	    let values = ["AA", "AB", "AC", "AD", "AE", "CA", "CB", "CC", "CD", "CE"]
+	    let values = ["A", "B", "C", "D", "E", "Q", "R", "S", "T", "U"]
 	    let value = -1
 	    iface.on('data', (data) => {
-		let val = data.toString().replace(/[^ABCD]/g, '')
+		let val = data.toString().replace(/[^ABCDEQRSTU]/g, '')
 		value = values.indexOf(val)
 		if(value !== -1) {
-		    console.log(val)
+		    console.log('command ' + val)
 		    socc.emit('command', val)
-		    //iface.close(() => sProcess(iface))
-		    // raspiInit()
-		    iface.flush()
+		    // iface.flush()
 		}
-		// console.log("Clear", data, data.toString())
+		console.log('value ' + val)
 		process.stdout.write(data)
+		// iface.flush()
 	    })
 	    console.log('raspi-serial opened')
 	})
@@ -60,29 +64,36 @@ server.listen(port, () => {
 })
 
 
+var brakeValue = 1
+
 raspi.init(() => {
     serial = new Serial({portId: "/dev/serial0"})
+    sProcess(serial, io.sockets)
+
+    const brake = new gpio.DigitalInput({
+	pin: 'GPIO23',
+	pullResistor: gpio.PULL_DOWN
+    })
+    const check = new gpio.DigitalInput({
+	pin: 'GPIO24',
+	pullResistor: gpio.PULL_DOWN
+    })
+    const output = new gpio.DigitalOutput('GPIO16');
+    output.write(1)
     io.sockets.on('connection', socket => {
-	console.log('connected')
-
-	sProcess(serial, socket)
-
+		console.log('connected')
         socket.on('test', data => { 
-            console.log(data, socket)
-	    setTimeout(() => {
+            console.log(data)
+	    	setTimeout(() => {
     	        socket.emit('response', 'success')
             }, 1000)
-	})
+		})
     })
+
+    while(true) {
+		io.sockets.emit('brake', brake.read())
+		io.sockets.emit('check', check.read())
+    }
 })
 
 
-/* io.sockets.on('connection', socket => {
-    console.log('connected')
-    socket.on('test', data => { 
-        console.log(data, socket)
-        setTimeout(() => {
-            socket.emit('response', 'success')
-        }, 1000)
-    })
-}) */
