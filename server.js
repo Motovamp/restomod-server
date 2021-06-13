@@ -82,18 +82,21 @@ raspi.init(() => {
     output.write(1)
     io.sockets.on('connection', socket => {
 		console.log('connected')
-        socket.on('test', data => { 
-            console.log(data)
-	    	setTimeout(() => {
-    	        socket.emit('response', 'success')
-            }, 1000)
-		})
+
+		while(true) {
+			socket.emit('brake', brake.read())
+			socket.emit('check', check.read())
+		}
+
+        // socket.on('test', data => { 
+        //     console.log(data)
+	    // 	setTimeout(() => {
+    	//         socket.emit('response', 'success')
+        //     }, 1000)
+		// })
     })
 
-    // while(true) {
-	// 	io.sockets.emit('brake', brake.read())
-	// 	io.sockets.emit('check', check.read())
-    // }
+    
 })
 
 
