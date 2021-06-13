@@ -89,10 +89,10 @@ function digitalRead(socket) {
 	// let bv = brake.read()
 	socket.emit('brake', brake.read())
 
-	if(bv != brakeValue) {
-		brakeValue = bv
+	// if(bv != brakeValue) {
+	// 	brakeValue = bv
 		
-	}
+	// }
 	
 	// let cv = check.read()
 	socket.emit('check', check.read())
