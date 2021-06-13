@@ -67,6 +67,18 @@ server.listen(port, () => {
 var brakeValue = 1,
 	checkValue = 1
 
+    const brake = new gpio.DigitalInput({
+		pin: 'GPIO23',
+		pullResistor: gpio.PULL_DOWN
+    })
+    const check = new gpio.DigitalInput({
+		pin: 'GPIO24',
+		pullResistor: gpio.PULL_DOWN
+    })
+    const output = new gpio.DigitalOutput('GPIO16');
+    output.write(1)
+
+
 async function digitalRead(socket) {
 	while(true) {
 		let bv = brake.read()
@@ -88,16 +100,6 @@ raspi.init(() => {
     serial = new Serial({portId: "/dev/serial0"})
     sProcess(serial, io.sockets)
 
-    const brake = new gpio.DigitalInput({
-	pin: 'GPIO23',
-	pullResistor: gpio.PULL_DOWN
-    })
-    const check = new gpio.DigitalInput({
-	pin: 'GPIO24',
-	pullResistor: gpio.PULL_DOWN
-    })
-    const output = new gpio.DigitalOutput('GPIO16');
-    output.write(1)
     io.sockets.on('connection', socket => {
 		console.log('connected')
 
