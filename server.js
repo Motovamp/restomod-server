@@ -29,19 +29,25 @@ var serial = false
 function sProcess(iface, socc) {
 	console.log("test2")
 	iface.open(() => {
-	    let values = ["A", "B", "C", "D", "E", "Q", "R", "S", "T", "U"]
+	    let values = ["A", "B", "C", "D", "E", "Q", "R", "S", "T", "U", "K", "L", "M", "N"]
 	    let value = -1
 	    iface.on('data', (data) => {
-		let val = data.toString().replace(/[^ABCDEQRSTU]/g, '')
-		value = values.indexOf(val)
-		if(value !== -1) {
-		    console.log('command ' + val)
-		    socc.emit('command', val)
-		    // iface.flush()
-		}
-		console.log('value ' + val)
-		process.stdout.write(data)
-		// iface.flush()
+			let val = data.toString().replace(/[^ABCDEQRSTUKLMN]/g, '')
+			value = values.indexOf(val)
+			if(value !== -1) {
+		    	console.log('command ' + val)
+				switch(val) {
+					case "K": socc.emit('check', 1); break 
+					case "L": socc.emit('check', 0); break 
+					case "M": socc.emit('brake', 1); break 
+					case "N": socc.emit('brake', 0); break
+					default: socc.emit('command', val)
+				}
+		    	// iface.flush()
+			}
+			// console.log('value ' + val)
+			process.stdout.write(data)
+			// iface.flush()
 	    })
 	    console.log('raspi-serial opened')
 	})
@@ -75,12 +81,12 @@ var brakeValue = 1,
 		pin: 'GPIO24',
 		pullResistor: gpio.PULL_DOWN
     })
-    const output = new gpio.DigitalOutput('GPIO16');
-    output.write(1)
+    // const output = new gpio.DigitalOutput('GPIO16');
+    // output.write(1)
 
 
-async function digitalRead(socket) {
-	while(true) {
+function digitalRead(socket) {
+	{
 		let bv = brake.read()
 		if(bv != brakeValue) {
 			brakeValue = bv
@@ -105,12 +111,13 @@ raspi.init(() => {
 
 		// digitalRead(socket)
 
-        // socket.on('test', data => { 
-        //     console.log(data)
-	    // 	setTimeout(() => {
-    	//         socket.emit('response', 'success')
-        //     }, 1000)
-		// })
+        socket.on('read', () => { 
+			digitalRead(socket)
+            // console.log(data)
+	    	// setTimeout(() => {
+    	    //     socket.emit('response', 'success')
+            // }, 1000)
+		})
     })
 
     
