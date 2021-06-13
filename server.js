@@ -90,10 +90,10 @@ raspi.init(() => {
 		})
     })
 
-    while(true) {
-		io.sockets.emit('brake', brake.read())
-		io.sockets.emit('check', check.read())
-    }
+    // while(true) {
+	// 	io.sockets.emit('brake', brake.read())
+	// 	io.sockets.emit('check', check.read())
+    // }
 })
 
 
