@@ -70,8 +70,8 @@ server.listen(port, () => {
 })
 
 
-var brakeValue = 1,
-	checkValue = 1
+// var brakeValue = 1,
+// 	checkValue = 1
 
     const brake = new gpio.DigitalInput({
 		pin: 'GPIO23',
@@ -82,9 +82,11 @@ var brakeValue = 1,
 		pullResistor: gpio.PULL_DOWN
     })
 
-    const boost = new gpio.DigitalOutput('GPIO16')
-    const turns = new gpio.DigitalOutput('GPIO20')
-	boost.write(0) 
+    const turns = new gpio.DigitalOutput('GPIO16')
+    const boost1 = new gpio.DigitalOutput('GPIO20')
+    const boost2 = new gpio.DigitalOutput('GPIO21')
+	boost1.write(0) 
+	boost2.write(0) 
 	turns.write(0)
 
 function digitalRead(socket) {
@@ -106,6 +108,16 @@ function digitalRead(socket) {
 	// console.log('reading', bv, cv)
 }
 
+function boostOn() {
+	boost2.write(1)
+	setTimeout(() => boost2.write(0), 1000)
+}
+
+function boostOff() {
+	boost1.write(1)
+	setTimeout(() => boost1.write(0), 1000)
+}
+
 
 raspi.init(() => {
     serial = new Serial({portId: "/dev/serial0"})
@@ -121,9 +133,9 @@ raspi.init(() => {
 
 		socket.on('exhst', value => {
 			if(value == 'boost') {
-				boost.write(1)
+				boostOn()
 			} else {
-				boost.write(0)
+				boostOff()
 			}
 		})		
 		socket.on('turn', value => {
