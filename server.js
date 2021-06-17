@@ -91,6 +91,7 @@ server.listen(port, () => {
 	boost1.write(0) 
 	boost2.write(0) 
 	turns.write(0)
+	hscreen.write(0)
 
 function digitalRead(socket) {
 	let bv = brake.read()
@@ -122,7 +123,7 @@ raspi.init(() => {
     io.sockets.on('connection', socket => {
 		console.log('connected')
 		socket.emit('sconnect', 'success')
-		hscreen.write(0)
+		hscreen.write(1)
 
         socket.on('read', () => { 
 			digitalRead(socket)
