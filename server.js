@@ -75,11 +75,11 @@ server.listen(port, () => {
 
     const brake = new gpio.DigitalInput({
 		pin: 'GPIO23',
-		pullResistor: gpio.PULL_DOWN
+		pullResistor: gpio.PULL_UP
     })
     const check = new gpio.DigitalInput({
 		pin: 'GPIO24',
-		pullResistor: gpio.PULL_DOWN
+		pullResistor: gpio.PULL_UP
     })
 
     const turns = new gpio.DigitalOutput('GPIO16')
@@ -91,10 +91,10 @@ server.listen(port, () => {
 
 function digitalRead(socket) {
 	let bv = brake.read()
-	socket.emit('brake', bv)
+	socket.emit('brake', bv ? '0' : '1')
 		
 	let cv = check.read()
-	socket.emit('check', cv)
+	socket.emit('check', cvbv ? '0' : '1')
 	
 	// console.log('reading', bv, cv)
 }
