@@ -85,6 +85,9 @@ server.listen(port, () => {
     const turns = new gpio.DigitalOutput('GPIO16')
     const boost1 = new gpio.DigitalOutput('GPIO20')
     const boost2 = new gpio.DigitalOutput('GPIO21')
+
+    const hscreen = new gpio.DigitalOutput('GPIO2')
+
 	boost1.write(0) 
 	boost2.write(0) 
 	turns.write(0)
@@ -119,6 +122,7 @@ raspi.init(() => {
     io.sockets.on('connection', socket => {
 		console.log('connected')
 		socket.emit('sconnect', 'success')
+		hscreen.write(0)
 
         socket.on('read', () => { 
 			digitalRead(socket)
