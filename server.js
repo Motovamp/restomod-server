@@ -94,7 +94,7 @@ function digitalRead(socket) {
 	socket.emit('brake', bv ? '0' : '1')
 		
 	let cv = check.read()
-	socket.emit('check', cvbv ? '0' : '1')
+	socket.emit('check', cv ? '0' : '1')
 	
 	// console.log('reading', bv, cv)
 }
