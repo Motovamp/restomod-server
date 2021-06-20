@@ -33,12 +33,14 @@ function sProcess(iface, socc) {
 			value = values.indexOf(val)
 			if(value !== -1) {
 				
-		    	// console.log('command ' + val)
+		    	console.log('command ' + val)
 				switch(val) {
 					case "I":
+						// console.log("Info")
 						if(!dispalyState) { // включаем подсветку дисплея и отправляем команду на запуск картинкия заставки
 							hscreen.write(0)
 							socc.emit('command', 'Start')
+							console.log("diplay on")
 						}  
 					break 
 					case "O": 
