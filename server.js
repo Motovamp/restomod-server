@@ -26,10 +26,10 @@ var dispalyState = false
 function sProcess(iface, socc) {
 	console.log("test2")
 	iface.open(() => {
-	    let values = ["A", "B", "C", "D", "E", "Q", "R", "S", "T", "U", "P", "M", "I", "O"]
+	    let values = ["A", "B", "C", "D", "E", "Q", "R", "S", "T", "U", "P", "M", "I", "O", "W"]
 	    let value = -1
 	    iface.on('data', (data) => {
-			let val = data.toString().replace(/[^ABCDEQRSTUPMIO]/g, '')
+			let val = data.toString().replace(/[^ABCDEQRSTUPMIOW]/g, '')
 			value = values.indexOf(val)
 			if(value !== -1) {
 				
@@ -38,14 +38,22 @@ function sProcess(iface, socc) {
 					case "I":
 						// console.log("Info")
 						if(!dispalyState) { // включаем подсветку дисплея и отправляем команду на запуск картинкия заставки
-							hscreen.write(0)
+							hscreen.write(1)
+							dispalyState = true
 							socc.emit('command', 'Start')
-							console.log("diplay on")
 						}  
 					break 
+					case "W":
+					if(!dispalyState) { // включаем подсветку дисплея и отправляем команду на запуск картинкия заставки
+						hscreen.write(1)
+						dispalyState = true
+						socc.emit('command', 'Start')
+					}  
+				break 
 					case "O": 
 						if(dispalyState) { // зажигание выключено, отрубаем дисплей
-							hscreen.write(1)
+							hscreen.write(0)
+							dispalyState = false
 							socc.emit('command', 'Off')
 						}
 					break 
@@ -91,6 +99,7 @@ server.listen(port, () => {
 		pullResistor: gpio.PULL_UP
     })
 
+    const working = new gpio.DigitalOutput('GPIO12')
     const turns = new gpio.DigitalOutput('GPIO16')
     const boost1 = new gpio.DigitalOutput('GPIO20')
     const boost2 = new gpio.DigitalOutput('GPIO21')
@@ -100,7 +109,7 @@ server.listen(port, () => {
 	boost1.write(0) 
 	boost2.write(0) 
 	turns.write(0)
-	hscreen.write(1)  // Как только загрузились, гасим дисплей
+	hscreen.write(0)  // Как только загрузились, гасим дисплей
 
 function digitalRead(socket) {
 	let bv = brake.read()
@@ -131,8 +140,9 @@ raspi.init(() => {
 
     io.sockets.on('connection', socket => {
 		console.log('connected')
+			working.write(1)		
 			socket.emit('sconnect', 'success')
-			hscreen.write(1)
+			// hscreen.write(1)
 
         socket.on('read', () => { 
 			digitalRead(socket)
