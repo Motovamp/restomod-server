@@ -109,7 +109,7 @@ server.listen(port, () => {
 	boost1.write(0) 
 	boost2.writ(0) 
 	turns.write(0)
-	hscreen.write()  // Как только загрузились, гасим дисплей
+	hscreen.write(0)  // Как только загрузились, гасим дисплей
 
 function digitalRead(socket) {
 	let bv = brake.read()
