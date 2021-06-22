@@ -38,21 +38,21 @@ function sProcess(iface, socc) {
 					case "I":
 						// console.log("Info")
 						if(!dispalyState) { // включаем подсветку дисплея и отправляем команду на запуск картинкия заставки
-							hscreen.write(1)
+							hscreen.write(0)
 							dispalyState = true
 							socc.emit('command', 'Start')
 						}  
 					break 
 					case "W":
-					if(!dispalyState) { // включаем подсветку дисплея и отправляем команду на запуск картинкия заставки
-						hscreen.write(1)
-						dispalyState = true
-						socc.emit('command', 'Start')
-					}  
-				break 
+						if(!dispalyState) { // включаем подсветку дисплея и отправляем команду на запуск картинкия заставки
+							hscreen.write(0)
+							dispalyState = true
+							socc.emit('command', 'Start')
+						}  
+					break 
 					case "O": 
 						if(dispalyState) { // зажигание выключено, отрубаем дисплей
-							hscreen.write(0)
+							hscreen.write(1)
 							dispalyState = false
 							socc.emit('command', 'Off')
 						}
@@ -106,10 +106,10 @@ server.listen(port, () => {
 
     const hscreen = new gpio.DigitalOutput('GPIO18') // разрыв подсветки экрана (сразу после UART)
 
-	boost1.write(0) 
-	boost2.write(0) 
-	turns.write(0)
-	hscreen.write(0)  // Как только загрузились, гасим дисплей
+	boost1.write(1) 
+	boost2.writ(1) 
+	turns.write(1)
+	hscreen.write(1)  // Как только загрузились, гасим дисплей
 
 function digitalRead(socket) {
 	let bv = brake.read()
@@ -130,12 +130,13 @@ function boostOn() {
 function boostOff() {
 	boost2.write(0)
 	boost1.write(1)
-	setTimeout(() => boost1.write(0), 1000)
+	setTimeout(() => boost1.write(1), 1000)
 }
 
 
 raspi.init(() => {
-    serial = new Serial({portId: "/dev/serial0"})
+    // serial = new Serial({portId: "/dev/serial0"})
+    serial = new Serial({portId: "/dev/ttyUSB0"})
     sProcess(serial, io.sockets)
 
     io.sockets.on('connection', socket => {
