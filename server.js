@@ -107,7 +107,7 @@ server.listen(port, () => {
     const hscreen = new gpio.DigitalOutput('GPIO18') // разрыв подсветки экрана (сразу после UART)
 
 	boost1.write(0) 
-	boost2.writ(0) 
+	boost2.write(0) 
 	turns.write(0)
 	hscreen.write(0)  // Как только загрузились, гасим дисплей
 
