@@ -89,7 +89,7 @@ server.listen(port, () => {
 		pullResistor: gpio.PULL_UP
     })
     const malf = new gpio.DigitalInput({ // неисправность блока реле 
-		pin: 'GPIO07',
+		pin: 'GPIO26',
 		pullResistor: gpio.PULL_DOWN
     })
 
