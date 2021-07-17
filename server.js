@@ -7,16 +7,6 @@ const io = require('socket.io')(server)
 const product_mode = false
 exports.pMode = product_mode
 
-// const i2c = require('i2c-bus')
-// const DEVICE_ADDR = 0x04
-
-// const i2c1 = i2c.open(1)
-// var buf = new Buffer(4)
-// const rawData = i2c1.read(DEVICE_ADDR, 0x04, buf, (err, succ) => {
-//    console.log(err, succ)
-// })
-
-
 const raspi = require('raspi')
 const Serial = require('raspi-serial').Serial
 const gpio = require('raspi-gpio')
@@ -98,6 +88,10 @@ server.listen(port, () => {
 		pin: 'GPIO24',
 		pullResistor: gpio.PULL_UP
     })
+    const malf = new gpio.DigitalInput({ // неисправность блока реле 
+		pin: 'GPIO07',
+		pullResistor: gpio.PULL_DOWN
+    })
 
     const working = new gpio.DigitalOutput('GPIO12')
     const turns = new gpio.DigitalOutput('GPIO16')
@@ -117,6 +111,9 @@ function digitalRead(socket) {
 		
 	let cv = check.read()
 	socket.emit('check', cv ? '0' : '1')
+
+	let mv = malf.read()
+	socket.emit('malf', mv ? '1' : '0')
 	
 	// console.log('reading', bv, cv)
 }
