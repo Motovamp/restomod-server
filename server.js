@@ -1,8 +1,10 @@
 const express = require('express')
+const fs = require('fs')
 const app = express()
 const server = require('http').createServer(app)
 const port = 8090
 const io = require('socket.io')(server)
+const valve = 200
 
 const product_mode = false
 exports.pMode = product_mode
@@ -118,16 +120,32 @@ function digitalRead(socket) {
 	// console.log('reading', bv, cv)
 }
 
+function boost() {
+	return parseInt(fs.readFileSync('./exhst.info'))
+}
+
+function boostSet(value) {
+	fs.writeFileSync('./exhst.info', value)
+}
+
 function boostOn() {
 	boost1.write(0)
-	boost2.write(1)
-	setTimeout(() => boost2.write(0), 1000)
+	if(!boost()) {
+		boost2.write(1)
+		setTimeout(() => {
+			boost2.write(0)
+		}, valve)
+	}
+	boostSet(1)
 }
 
 function boostOff() {
 	boost2.write(0)
-	boost1.write(1)
-	setTimeout(() => boost1.write(0), 1000)
+	if(boost()) {
+		boost1.write(1)
+		setTimeout(() => boost1.write(0), valve)
+	}
+	boostSet(0)
 }
 
 
@@ -138,7 +156,7 @@ raspi.init(() => {
 
     io.sockets.on('connection', socket => {
 		console.log('connected')
-			working.write(1)		
+			setTimeout(() => working.write(1), 200)		
 			socket.emit('sconnect', 'success')
 			// hscreen.write(1)
 
