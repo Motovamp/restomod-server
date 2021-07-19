@@ -4,7 +4,7 @@ const app = express()
 const server = require('http').createServer(app)
 const port = 8090
 const io = require('socket.io')(server)
-const valve = 200
+const valve = 125
 
 const product_mode = false
 exports.pMode = product_mode
