@@ -32,14 +32,14 @@ function sProcess(iface, socc) {
 						if(!dispalyState) { // включаем подсветку дисплея и отправляем команду на запуск картинкия заставки
 							hscreen.write(1)
 							dispalyState = true
-							socc.emit('command', 'Start')
+							setTimeout(() => socc.emit('command', 'Start'), 30)
 						}  
 					break 
 					case "W":
 						if(!dispalyState) { // включаем подсветку дисплея и отправляем команду на запуск картинкия заставки
 							hscreen.write(1)
 							dispalyState = true
-							socc.emit('command', 'Start')
+							setTimeout(() => socc.emit('command', 'WStart'), 30)
 						}  
 					break 
 					case "O": 
@@ -51,7 +51,7 @@ function sProcess(iface, socc) {
 					break 
 					// default: socc.emit('command', val)
 				}
-				socc.emit('command', val)
+				setTimeout(() => socc.emit('command', val), 10)
 		    	// iface.flush()
 			}
 			// console.log('value ' + val)
