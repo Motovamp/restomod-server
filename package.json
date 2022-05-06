@@ -1,6 +1,6 @@
 {
   "name": "restomod-server",
-  "version": "0.3.2",
+  "version": "1.0.1",
   "description": "Restomod car comp node js server",
   "main": "index.js",
   "scripts": {
